@@ -1,5 +1,4 @@
 import logging
-import os
 import requests
 import json
 import functools

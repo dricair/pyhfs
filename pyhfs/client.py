@@ -1,10 +1,7 @@
-import logging
-import os
 import itertools
 import datetime
 
 from . import session
-from . import exception
 
 # Based on documentation iMaster NetEco V600R023C00 Northbound Interface Reference-V6(SmartPVMS)
 # https://support.huawei.com/enterprise/en/doc/EDOC1100261860/
@@ -113,7 +110,7 @@ class Client:
         '''Get the current (active) alarm information of a device.
         Implementation wraps a call to the Device Alarm Interface.
         Plant IDs can be obtained by querying get_plant_list, they are stationCode parameters.
-        Language can be any of zh_CN (Chinese), en_US (English), ja_JP (Japanese), it_IT (Italian), 
+        Language can be any of zh_CN (Chinese), en_US (English), ja_JP (Japanese), it_IT (Italian),
         nl_NL (Dutch), pt_BR (Portuguese), de_DE (German), fr_FR: French), es_ES (Spanish), pl_PL (Polish)
         '''
         parameters = {'language': language,

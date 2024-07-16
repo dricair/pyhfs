@@ -1,10 +1,8 @@
 import os
-import sys
 import logging
 import functools
 
 import pyhfs
-
 
 def frequency_limit(func):
     '''Handle frequency limits cases, which cannot ben considered as fails.'''
@@ -16,7 +14,6 @@ def frequency_limit(func):
             logging.warning(
                 'Couldn\'t complete test due to exceeding frequency limits.')
     return wrap
-
 
 def credentials():
     user = os.environ.get('FUSIONSOLAR_USER')

@@ -2,4 +2,9 @@
 from .session import Session
 from .client import Client
 from .client import ClientSession
-from .exception import *  # Automatically imports all public exception
+from .exception import Exception, LoginFailed, FrequencyLimit, Permission
+
+__all__ = [
+    "Session", "Client", "ClientSession",
+    "Exception", "LoginFailed", "FrequencyLimit", "Permission"
+]
