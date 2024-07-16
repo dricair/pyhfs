@@ -28,3 +28,10 @@ def credentials():
         raise ValueError('Missing environment variable FUSIONSOLAR_PASSWORD')
 
     return user, password
+
+def no_credentials():
+    """
+    Return True if credential are not available
+    This will have the effect of skipping tests
+    """
+    return ('FUSIONSOLAR_USER' not in os.environ) and ('FUSIONSOLAR_PASSWORD' not in os.environ)

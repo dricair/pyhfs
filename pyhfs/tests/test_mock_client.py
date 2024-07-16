@@ -1,10 +1,7 @@
-import os
-import sys
-import logging
 import unittest
 import datetime
 
-from pyhfs.tests.mock_session import *
+from pyhfs.tests.mock_session import MockSession
 import pyhfs
 
 
@@ -29,21 +26,19 @@ class TestMockClient(unittest.TestCase):
         self.assertGreaterEqual(len(plants_code), len(realtime))
 
         # Hourly data
-        hourly = self.client.get_plant_hourly_data(plants_code, now)
+        self.client.get_plant_hourly_data(plants_code, now)
 
         # Daily data
-        daily = self.client.get_plant_daily_data(plants_code, now)
+        self.client.get_plant_daily_data(plants_code, now)
 
         # Monthly data
-        monthly = self.client.get_plant_monthly_data(plants_code, now)
+        self.client.get_plant_monthly_data(plants_code, now)
 
         # Yearly data
-        yearly = self.client.get_plant_yearly_data(plants_code, now)
+        self.client.get_plant_yearly_data(plants_code, now)
 
         # Alarms
-        alarms = self.client.get_alarms_list(
-            plants_code, datetime.datetime(2000, 1, 1), now)
-        pass
+        self.client.get_alarms_list(plants_code, datetime.datetime(2000, 1, 1), now)
 
 
 if __name__ == '__main__':
