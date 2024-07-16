@@ -48,11 +48,16 @@ class Session:
     @exceptions_sanity
     def __exit__(self, exc_type, exc_val, exc_tb):
         self.logout()
+        self.session.close()
 
     @exceptions_sanity
     def logout(self) -> None:
         '''Logout from base url'''
-        self.session = requests.session()
+        try:
+            self._raw_post('logout')
+        except exception._305_NotLogged:
+            # Expected to happen after logout
+            pass
 
     @exceptions_sanity
     def login(self) -> None:
@@ -68,7 +73,7 @@ class Session:
                 'userName': self.user, 'systemCode': self.password})
             # Login succeeded, stores authentication token
             self.session.headers.update(
-                {'XSRF-TOKEN': response.cookies.get(name='XSRF-TOKEN')})
+                {'XSRF-TOKEN': response.headers.get('XSRF-TOKEN') or response.cookies.get(name='XSRF-TOKEN')})
         except exception._305_NotLogged:
             # Login failed can also be raised directly for 20001, 20002, 20003 failCodes.
             raise exception.LoginFailed() from None
