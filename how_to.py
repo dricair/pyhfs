@@ -33,6 +33,8 @@ def how_to(user: str, password: str):
 
 
 if __name__ == '__main__':
-    user = os.environ.get('FUSIONSOLAR_USER', 'unknown_user')
-    password = os.environ.get('FUSIONSOLAR_PASSWORD', 'unknown_password')
+    user = os.environ.get('FUSIONSOLAR_USER', None)
+    password = os.environ.get('FUSIONSOLAR_PASSWORD', None)
+    if user is None or password is None:
+        raise Exception("Please set FUSIONSOLAR_USER and FUSION_SOLARPASSWORD to allow login")
     how_to(user=user, password=password)
