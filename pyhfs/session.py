@@ -5,6 +5,8 @@ import functools
 
 from . import exception
 
+logger = logging.getLogger(__name__)
+
 # Based on documentation iMaster NetEco V600R023C00 Northbound Interface Reference-V6(SmartPVMS)
 # https://support.huawei.com/enterprise/en/doc/EDOC1100261860
 
@@ -17,7 +19,7 @@ def exceptions_sanity(func):
         try:
             return func(*args, **kwargs)
         except exception._InternalException as e:
-            logging.exception(
+            logger.exception(
                 'Internal exceptions getting out of of the private code.')
             raise exception.Exception(e.args[0], e.args[1]) from None
 
@@ -53,6 +55,7 @@ class Session:
     def logout(self) -> None:
         '''Logout from base url'''
         try:
+            logger.debug('Logout request')
             self._raw_post('logout')
         except exception._305_NotLogged:
             # Expected to happen after logout
@@ -64,10 +67,10 @@ class Session:
         Login to base url
         See documentation: https://support.huawei.com/enterprise/en/doc/EDOC1100261860/9e1a18d2/login-interface
         '''
-
         try:
             # Posts login request
             self.session.cookies.clear()
+            logger.debug("Login request")
             response, body = self._raw_post(endpoint='login', parameters={
                 'userName': self.user, 'systemCode': self.password})
             # Login succeeded, stores authentication token

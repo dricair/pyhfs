@@ -1,11 +1,13 @@
 import itertools
 import datetime
+import logging
 
 from . import session
 
 # Based on documentation iMaster NetEco V600R023C00 Northbound Interface Reference-V6(SmartPVMS)
 # https://support.huawei.com/enterprise/en/doc/EDOC1100261860/
 
+logger = logging.getLogger(__name__)
 
 class Client:
     def __init__(self, session: session.Session):
@@ -39,6 +41,7 @@ class Client:
         plants = []
         for page in itertools.count(start=1):
             param = {'pageNo': page, 'pageSize': 100}
+            logger.debug(f"Get plant list for page {page}")
             response = self.session.post(
                 endpoint='stations', parameters=param)['data']
             plants = plants + response.get('list', [])
@@ -64,6 +67,7 @@ class Client:
         Implementation wraps a call to the Plant Data Interfaces, see 7.1.4.1
         Plant IDs can be obtained by querying get_plant_list, they are stationCode parameters.
         '''
+        logger.debug("Get realtime plant data")
         return self._get_plant_data('getStationRealKpi', plants)
 
     def _get_plant_timed_data(self, endpoint, plants: list, date: datetime.datetime) -> list:
@@ -80,6 +84,7 @@ class Client:
         Implementation wraps a call to the Plant Hourly Data Interfaces, see 7.1.4.2
         Plant IDs can be obtained by querying get_plant_list, they are stationCode parameters.
         '''
+        logger.debug("Get station hour data")
         return self._get_plant_timed_data('getKpiStationHour', plants=plants, date=date)
 
     def get_plant_daily_data(self, plants: list, date: datetime.datetime) -> list:
@@ -88,6 +93,7 @@ class Client:
         Implementation wraps a call to the Plant Hourly Data Interfaces, see 7.1.4.3
         Plant IDs can be obtained by querying get_plant_list, they are stationCode parameters.
         '''
+        logger.debug("Get station daily data")
         return self._get_plant_timed_data('getKpiStationDay', plants=plants, date=date)
 
     def get_plant_monthly_data(self, plants: list, date: datetime.datetime) -> list:
@@ -96,6 +102,7 @@ class Client:
         Implementation wraps a call to the Plant Hourly Data Interfaces, see 7.1.4.4
         Plant IDs can be obtained by querying get_plant_list, they are stationCode parameters.
         '''
+        logger.debug("Get station monthly data")
         return self._get_plant_timed_data('getKpiStationMonth', plants=plants, date=date)
 
     def get_plant_yearly_data(self, plants: list, date: datetime.datetime) -> list:
@@ -104,6 +111,7 @@ class Client:
         Implementation wraps a call to the Plant Hourly Data Interfaces, see 7.1.4.5
         Plant IDs can be obtained by querying get_plant_list, they are stationCode parameters.
         '''
+        logger.debug("Get station yearly data")
         return self._get_plant_timed_data('getKpiStationYear', plants=plants, date=date)
 
     def get_alarms_list(self, plants: list, begin: datetime.datetime, end: datetime.datetime, language='en_US') -> list:
