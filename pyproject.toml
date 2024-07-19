@@ -20,3 +20,6 @@ classifiers = [
 [project.urls]
 "Homepage" = "https://github.com/guillaumeblanc/pyhfs"
 "Bug Tracker" = "https://github.com/guillaumeblanc/pyhfs/issues"
+
+[tool.ruff]
+line-length = 120
