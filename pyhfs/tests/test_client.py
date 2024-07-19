@@ -1,4 +1,3 @@
-
 import datetime
 import unittest
 
@@ -7,12 +6,10 @@ import pyhfs
 
 
 class TestClient(unittest.TestCase):
-
     @classmethod
     @frequency_limit
     def setUpClass(cls):
-
-        cls.invalid = 'Invalid93#!'
+        cls.invalid = "Invalid93#!"
         if no_credentials():
             cls.user, cls.password = None, None
             cls.session = None
@@ -45,19 +42,17 @@ class TestClient(unittest.TestCase):
             plants = client.get_plant_list()
 
             # Extract the list of plants code
-            plants_code = [plant['plantCode'] for plant in plants]
+            plants_code = [plant["plantCode"] for plant in plants]
 
             # Query realtime KPIs
             realtime = client.get_plant_realtime_data(plants_code)
             self.assertGreaterEqual(len(plants_code), len(realtime))
 
             # Hourly data, with non existing
-            client.get_plant_hourly_data(
-                plants_code + ['do_not_exist'], now)
+            client.get_plant_hourly_data(plants_code + ["do_not_exist"], now)
 
             # Daily data, with a plants list bigger than 100
-            client.get_plant_daily_data(
-                list(map(str, range(46))) + plants_code + list(map(str, range(107))), now)
+            client.get_plant_daily_data(list(map(str, range(46))) + plants_code + list(map(str, range(107))), now)
 
             # Monthly data
             client.get_plant_monthly_data(plants_code, now)
@@ -69,5 +64,5 @@ class TestClient(unittest.TestCase):
             client.get_alarms_list(plants_code, datetime.datetime(2000, 1, 1), now)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

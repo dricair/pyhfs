@@ -5,11 +5,10 @@ import pyhfs
 
 
 class TestSession(unittest.TestCase):
-
     @classmethod
     @frequency_limit
     def setUpClass(cls):
-        cls.invalid = 'Invalid93#!'
+        cls.invalid = "Invalid93#!"
         if no_credentials():
             cls.user, cls.password = None, None
         else:
@@ -40,5 +39,5 @@ class TestSession(unittest.TestCase):
             pass
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()
