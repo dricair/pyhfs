@@ -1,16 +1,30 @@
 import datetime
+from typing import Union, Optional
+import logging
 
-def from_timestamp(timestamp: int):
+logger = logging.getLogger(__name__)
+
+
+def from_timestamp(timestamp: Union[int,str]) -> Optional[datetime.datetime]:
     """
     Converts fusion solar timestamp to datetime
 
     Args:
-        timestamp: timestamp as an integer
+        timestamp: timestamp as an integer or string. If 'N/A' string is found,
+        return None
 
     returns:
-        datetime: timestamp converted to datetime, with milliseconds ignored
+        datetime: timestamp converted to datetime, with milliseconds ignored, None
+        in case of conversion error.
     """
-    return datetime.datetime.fromtimestamp(timestamp // 1000)
+    if isinstance(timestamp, str) and timestamp == "N/A":
+        return None
+
+    try:
+        return datetime.datetime.fromtimestamp(timestamp // 1000)
+    except ValueError as e:
+        logger.debug(f"Cannot convert value {timestamp} to datetime: {e}")
+        return None
 
 def to_timestamp(time: datetime.datetime) -> int:
     """Converts datetime to fusion solar timestamp.
