@@ -446,7 +446,8 @@ class DeviceRTDataRBattery(DeviceRTData):
 
     max_charge_power = data_item_prop("max_charge_power", "Maximum charge power in W (float)")
     max_discharge_power = data_item_prop("max_discharge_power", "Maximum discharge power in W (float)")
-    ch_discharge_power = data_item_prop("ch_discharge_power", "Charge/Discharge power in W (float)")
+    # Note: documentation says W instead of kW
+    ch_discharge_power = data_item_prop("ch_discharge_power", "Charge/Discharge power in kW (float)")
     voltage = data_item_prop("busbar_u", "Battery voltage in V (float)")
     soc = data_item_prop("battery_soc", "Battery State of Charge (SOC) in %")
     soh = data_item_prop(
