@@ -1,3 +1,4 @@
+import enum
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
@@ -39,6 +40,21 @@ class Device:
         60014: "Lithium battery rack",
         60010: "AC output power distribution",
         23070: "EMMA",
+    }
+
+    class DEVICE_DATA_TYPES(enum.Flag):
+        NONE = 0,
+        PRODUCTION = 1  # Device contains production data, containing 'mppt_power'
+        METER = 2       # Device is a meter sensor, containing 'active_power' on the grid
+        BATTERY = 4     # Device is a battery, containing 'ch_discharge_power'
+
+    DEVICE_DATA = {
+        1: DEVICE_DATA_TYPES.PRODUCTION | DEVICE_DATA_TYPES.METER,  # Inverter
+        38: DEVICE_DATA_TYPES.PRODUCTION | DEVICE_DATA_TYPES.METER, # Residential inverter
+        17: DEVICE_DATA_TYPES.METER,                                # Grid meter
+        47: DEVICE_DATA_TYPES.METER,                                # Power sensor
+        39: DEVICE_DATA_TYPES.BATTERY,                              # Residential battery
+        41: DEVICE_DATA_TYPES.BATTERY,                              # C&I and utility ESS
     }
 
     UNKNOWN_DEVICE = "Unknown"
@@ -94,6 +110,15 @@ class Device:
         Device type (as string)
         """
         return Device.DEVICE_TYPES.get(self.dev_type_id, Device.UNKNOWN_DEVICE)
+
+    @property
+    def dev_data(self) -> DEVICE_DATA_TYPES:
+        """
+        Device data type encoded as DEVICE_DATA_TYPES
+
+        Indicates if device contains production data, meter data or battery
+        """
+        return Device.DEVICE_DATA.get(self.dev_type_id, Device.DEVICE_DATA_TYPES.NONE)
 
     @property
     def plant(self) -> "Plant":

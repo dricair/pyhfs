@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "pyhfs"
-version = "0.2.0"
+version = "0.2.1"
 authors = [
   { name="Guillaume Blanc", email="guillaumeblanc.sc@gmail.com" },
   { name="Cédric Airaud", email="cairaud@gmail.com" },
