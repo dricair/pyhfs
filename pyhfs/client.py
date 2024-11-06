@@ -13,13 +13,9 @@ from .api.device_rpt_data import DeviceRptData
 from .api.alarm_data import AlarmData
 from .api.util import to_timestamp
 
-
-# Based on documentation iMaster NetEco V600R023C00 Northbound Interface Reference-V6(SmartPVMS)
-# https://support.huawei.com/enterprise/en/doc/EDOC1100261860/
-
-logger = logging.getLogger(__name__)
-
-if sys.version_info < (3, 12):
+try:
+    from itertools import batched
+except ImportError:
     # Added in version 3.12
     def batched(iterable: Iterable, n: int) -> Iterable:
         if n < 1:
@@ -28,6 +24,10 @@ if sys.version_info < (3, 12):
         while batch := tuple(itertools.islice(iterator, n)):
             yield batch
 
+# Based on documentation iMaster NetEco V600R023C00 Northbound Interface Reference-V6(SmartPVMS)
+# https://support.huawei.com/enterprise/en/doc/EDOC1100261860/
+
+logger = logging.getLogger(__name__)
 
 class Client:
     def __init__(self, session: session.Session):
